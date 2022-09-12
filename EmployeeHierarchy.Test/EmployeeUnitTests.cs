@@ -48,7 +48,7 @@ Employee2,Employee1,500";
 Employee3,Employee1,800
 Employee1,,1000
 Employee2,Employee1,500
-Employee2,Employee1,500";
+Employee2,Employee3,500";
 
             Assert.ThrowsException<ArgumentException>(() => new Employees(employees));
         }
@@ -91,6 +91,19 @@ Employee2,Employee1,500";
             var orgChart = new Employees(employees);
             var budget = orgChart.ManagerBudget("Employee1");
             Assert.AreEqual(3300L, budget);
+        }
+
+        [TestMethod]
+        public void ThrowsOnCalculatingBudgetForNonExistantManager()
+        {
+            var employees = @"Emplyee4,Employee2,500
+Employee3,Employee1,800
+Employee1,,1000
+Employee5,Employee1,500
+Employee2,Employee1,500";
+
+            var orgChart = new Employees(employees);
+            Assert.ThrowsException<ArgumentException>(() => orgChart.ManagerBudget("Employee8"));
         }
     }
 }
